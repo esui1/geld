@@ -5,7 +5,7 @@ const transactions = async (req, res) => {
 
   res.json(result);
 };
-
+// creating new transaction
 const createTransaction = async (req, res) => {
   const { user_id, name, amount, transaction_type, description, category_id } =
     req.body;
@@ -14,14 +14,14 @@ const createTransaction = async (req, res) => {
 
   res.json(response);
 };
-
+// editing transaction
 const updateTransaction = async (req, res) => {
   const { id } = req.params;
   const { name, email, password, avatar_img } = req.body;
   await sql`select * from transaction`;
   res.json([{ writewas: "succesful" }]);
 };
-
+// deleting transaction
 const deleteTransaction = async (req, res) => {
   const { id } = req.params;
   await sql`select * from transactions`;

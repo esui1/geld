@@ -1,7 +1,24 @@
+import { House } from "@/assets/house";
 import { Logo } from "@/assets/logo";
 import Link from "next/link";
+import axios from "axios";
+import { useEffect } from "react";
+import { useState } from "react";
 
 export default function Dashboard() {
+  // transaction- storing the data settransaction- THE storer
+  const [transaction, setTransaction] = useState([]);
+
+  const fetchTransactions = () => {
+    axios.get("http://localhost:8000/transaction").then((response) => {
+      setTransaction(response.data);
+    });
+  };
+  // ^
+  useEffect(() => {
+    fetchTransactions();
+  }, []);
+
   return (
     <div className="flex flex-col h-screen">
       {/* background color */}
@@ -48,6 +65,34 @@ export default function Dashboard() {
             <div>
               <span>Here are the transactions \/</span>
             </div>
+            {/* start of  */}
+
+            {transaction.map((transaction) => (
+              <div className="bg-white border rounded-xl p-3 flex items-center justify-between">
+                <div className="flex  gap-3 items-center">
+                  <House />
+                  <div>
+                    <h1>{transaction.name}</h1>
+
+                    <h5 className="text-gray-400">{transaction.updated_at}</h5>
+                  </div>
+                </div>
+                <h1 className="text-green-600">{transaction.amount}</h1>
+              </div>
+            ))}
+
+            <div className="bg-white border rounded-xl p-3 flex items-center justify-between">
+              <div className="flex  gap-3 items-center">
+                <House />
+                <div>
+                  <h1>Lending & Renting</h1>
+
+                  <h5 className="text-gray-400">14:00</h5>
+                </div>
+              </div>
+              <h1 className="text-green-600">-1000</h1>
+            </div>
+            {/*  */}
           </div>
         </div>
         {/* dialog box */}
@@ -56,7 +101,7 @@ export default function Dashboard() {
             <form method="dialog">
               {/* if there is a button in form, it will close the modal */}
               <button className="text-lg btn btn-sm btn-circle btn-ghost absolute right-3 top-5">
-                ✕
+                X
               </button>
             </form>
             <h3 className="font-bold text-2xl">Add Record</h3>
