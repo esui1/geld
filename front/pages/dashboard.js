@@ -36,7 +36,7 @@ export default function Dashboard() {
               </Link>
             </div>
             <div className="flex items-center gap-x-5">
-              <button className="btn btn-sm font-thin rounded-full h-[32px] w-[100px] bg-blue-700 text-slate-50">
+              <button className="btn btn-sm font-thin rounded-full h-[32px] w-[100px] bg-blue-400 text-slate-50">
                 + Record
               </button>
               <img src="/klee.png" className="h-[40px] w-[40px] rounded-full" />
@@ -54,7 +54,7 @@ export default function Dashboard() {
               <h1>Records</h1>
             </div>
             <button
-              className="my-2 btn btn-sm font-thin rounded-full h-[32px] w-11/12 bg-blue-700 text-slate-50"
+              className="my-2 btn btn-sm font-thin rounded-full h-[32px] w-11/12 bg-blue-400 text-slate-50"
               onClick={() => document.getElementById("my_modal_3").showModal()}
             >
               + ADD
@@ -97,7 +97,7 @@ export default function Dashboard() {
         </div>
         {/* dialog box */}
         <dialog id="my_modal_3" className="modal">
-          <div className="modal-box w-11/12 max-w-5xl max-h-none h-[800px]">
+          <div className="modal-box w-11/12 max-w-5xl max-h-none h-[450px]">
             <form method="dialog">
               {/* if there is a button in form, it will close the modal */}
               <button className="text-lg btn btn-sm btn-circle btn-ghost absolute right-3 top-5">
@@ -128,29 +128,59 @@ export default function Dashboard() {
                 {/* category */}
                 <div className="w-full">
                   <h1 className="font-thin text-lg">Category</h1>
-                  <div className="dropdown w-full">
-                    <div
-                      tabIndex={0}
-                      role="button"
-                      className="btn bg-gray-100 border-[1px] border-gray-300 rounded-xl max-w-none w-full"
-                    >
-                      Category
+                  <select className="select w-full max-w-xs">
+                    <option disabled selected>
+                      Add category
+                    </option>
+                    <option>home</option>
+                    <option>Gift</option>
+                    <option>Food</option>
+                    <option>Drink</option>
+                    <option>Taxi</option>
+                    <option>Shopping</option>
+                  </select>
+
+                  <div className="flex">
+                    <div>
+                      <h1>Date</h1>
+                      <input
+                        type="date"
+                        placeholder="Type here"
+                        className="input input-bordered w-md max-w-xs gap-3"
+                      />
                     </div>
-                    <ul
-                      tabIndex={0}
-                      className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-full"
-                    >
-                      <li>
-                        <a>Item 1</a>
-                      </li>
-                      <li>
-                        <a>Item 2</a>
-                      </li>
-                    </ul>
+                    <div>
+                      <h1>Date</h1>
+                      <input
+                        type="time"
+                        placeholder="Type here"
+                        className="input input-bordered w-md max-w-xs"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex center pt-8">
+                    <button className="btn btn-wide bg-blue-300 rounded-full w-[350px]">
+                      Add Record
+                    </button>
                   </div>
                 </div>
               </div>
-              <div className="w-1/2">HELLO</div>
+              <div className="w-1/2">
+                <div>
+                  <h1>Payee</h1>
+                  <input
+                    type="text"
+                    placeholder="Type here"
+                    className="input input-bordered w-full max-w-xs"
+                  />
+                  <h1>Note</h1>
+                  <input
+                    type="text"
+                    placeholder="write here"
+                    className="input input-bordered input-lg w-full max-w-full h-[260px]"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </dialog>
