@@ -4,6 +4,7 @@ import Link from "next/link";
 import axios from "axios";
 import { useEffect } from "react";
 import { useState } from "react";
+import { Gift } from "@/assets/gift";
 
 export default function Dashboard() {
   // transaction- storing the data settransaction- THE storer
@@ -28,6 +29,7 @@ export default function Dashboard() {
           <div className="flex justify-between items-center py-3">
             <div className="flex items-center gap-x-5">
               <Logo />
+              
               <Link className="text-lg" href="#">
                 Dashboard
               </Link>
@@ -132,12 +134,12 @@ export default function Dashboard() {
                     <option disabled selected>
                       Add category
                     </option>
-                    <option>home</option>
-                    <option>Gift</option>
-                    <option>Food</option>
-                    <option>Drink</option>
-                    <option>Taxi</option>
-                    <option>Shopping</option>
+                    <option>🕌home</option>
+                    <option>🎁Gift</option>
+                    <option>🫐Food</option>
+                    <option>🍸Drink</option>
+                    <option>🚕Taxi</option>
+                    <option>🛍️Shopping</option>
                   </select>
 
                   <div className="flex">
