@@ -10,12 +10,60 @@ export default function Dashboard() {
   // transaction- storing the data settransaction- THE storer
   const [transaction, setTransaction] = useState([]);
 
+  const [amount, setAmount] = useState("");
+  const [name, setName] = useState("");
+  const [date, setDate] = useState("");
+  const [desc, setDesc] = useState("");
+  const [time, setTime] = useState("");
+  const [user_id, setUser] = useState("admin");
+  const [transaction_type, setType] = useState("exp");
+  const [category, setCategory] = useState("");
+
+  const changeAmount = (event) => {
+    setAmount(event.target.value);
+  };
+  const changeDate = (event) => {
+    setDate(event.target.value);
+  };
+  const changeTime = (event) => {
+    setTime(event.target.value);
+  };
+  const changeName = (event) => {
+    setName(event.target.value);
+  };
+  const changeDesc = (event) => {
+    setDesc(event.target.value);
+  };
+  const changeCategory = (event) => {
+    setCategory(event.target.value);
+    console.log(category);
+  };
+
   const fetchTransactions = () => {
     axios.get("http://localhost:8000/transaction").then((response) => {
       setTransaction(response.data);
     });
   };
-  // ^
+
+  const createTransaction = async () => {
+    try {
+      await axios.post("http://localhost:8000/transaction/create", {
+        user_id,
+        amount,
+        name,
+        desc,
+        date,
+        time,
+        category,
+        transaction_type,
+      });
+      fetchTransactions();
+      document.getElementById("my_modal_3").close();
+    } catch (error) {
+      console.error("error");
+    }
+  };
+
   useEffect(() => {
     fetchTransactions();
   }, []);
@@ -29,7 +77,7 @@ export default function Dashboard() {
           <div className="flex justify-between items-center py-3">
             <div className="flex items-center gap-x-5">
               <Logo />
-              
+
               <Link className="text-lg" href="#">
                 Dashboard
               </Link>
@@ -122,6 +170,8 @@ export default function Dashboard() {
                 <div className="p-3 my-3 flex flex-col bg-gray-100 border-[1px] border-gray-300 rounded-xl">
                   <span className="font-thin text-lg">Amount</span>
                   <input
+                    value={amount}
+                    onChange={changeAmount}
                     type="number"
                     placeholder="₮ 0.00"
                     className="placeholder:text-xl w-11/12 h-[28px] bg-gray-100"
@@ -130,30 +180,34 @@ export default function Dashboard() {
                 {/* category */}
                 <div className="w-full">
                   <h1 className="font-thin text-lg">Category</h1>
-                  <select className="select w-full max-w-xs">
-                    <option disabled selected>
-                      Add category
-                    </option>
-                    <option>🕌home</option>
-                    <option>🎁Gift</option>
-                    <option>🫐Food</option>
-                    <option>🍸Drink</option>
-                    <option>🚕Taxi</option>
-                    <option>🛍️Shopping</option>
+                  <select
+                    onChange={(value) => setCategory(value)}
+                    className="select w-full max-w-xs"
+                  >
+                    <option value="home">🕌home</option>
+                    <option value="gift">🎁Gift</option>
+                    <option value="food">🫐Food</option>
+                    <option value="drink">🍸Drink</option>
+                    <option value="transport">🚕Taxi</option>
+                    <option value="shop">🛍️Shopping</option>
                   </select>
 
                   <div className="flex">
                     <div>
                       <h1>Date</h1>
                       <input
+                        value={date}
+                        onChange={changeDate}
                         type="date"
                         placeholder="Type here"
                         className="input input-bordered w-md max-w-xs gap-3"
                       />
                     </div>
                     <div>
-                      <h1>Date</h1>
+                      <h1>Time</h1>
                       <input
+                        value={time}
+                        onChange={changeTime}
                         type="time"
                         placeholder="Type here"
                         className="input input-bordered w-md max-w-xs"
@@ -161,7 +215,10 @@ export default function Dashboard() {
                     </div>
                   </div>
                   <div className="flex center pt-8">
-                    <button className="btn btn-wide bg-blue-300 rounded-full w-[350px]">
+                    <button
+                      onClick={createTransaction}
+                      className="btn bg-blue-300 rounded-full w-[350px]"
+                    >
                       Add Record
                     </button>
                   </div>
@@ -170,17 +227,22 @@ export default function Dashboard() {
               <div className="w-1/2">
                 <div>
                   <h1>Payee</h1>
+
                   <input
+                    value={name}
+                    onChange={changeName}
                     type="text"
                     placeholder="Type here"
                     className="input input-bordered w-full max-w-xs"
                   />
                   <h1>Note</h1>
-                  <input
+                  <textarea
+                    value={desc}
+                    onChange={changeDesc}
                     type="text"
                     placeholder="write here"
                     className="input input-bordered input-lg w-full max-w-full h-[260px]"
-                  />
+                  ></textarea>
                 </div>
               </div>
             </div>

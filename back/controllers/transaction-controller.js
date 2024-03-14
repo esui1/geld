@@ -1,4 +1,5 @@
 const { sql } = require("../config/database");
+const { v4: id } = require("uuid");
 
 const transactions = async (req, res) => {
   const result = await sql`select * from transactions`;
@@ -7,10 +8,31 @@ const transactions = async (req, res) => {
 };
 // creating new transaction
 const createTransaction = async (req, res) => {
-  const { user_id, name, amount, transaction_type, description, category_id } =
-    req.body;
+  const {
+    user_id,
+    name,
+    amount,
+    transaction_type,
+    desc,
+    category,
+    date,
+    time,
+  } = req.body;
+
+  console.log({
+    user_id,
+    name,
+    amount,
+    transaction_type,
+    desc,
+    category,
+    date,
+    time,
+  });
+  const datetime = date + "T" + time;
+  // date+time=datetime to combine date and time in one data.
   const response =
-    await sql`insert into transactions(user_id, name, amount, transaction_type, description, category_id) values (${user_id}, ${name}, ${amount}, ${transaction_type}, ${description}, ${category_id})`;
+    await sql`insert into transactions(id, user_id, name, amount, transaction_type, description, category_id, created_at) values (${id()}, ${user_id}, ${name}, ${amount}, ${transaction_type}, ${desc}, ${category}, ${datetime})`;
 
   res.json(response);
 };
