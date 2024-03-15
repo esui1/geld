@@ -5,6 +5,8 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useState } from "react";
 import { Gift } from "@/assets/gift";
+import { Eye } from "@/assets/eye";
+import Sidebar from "./components/category-sidebar";
 
 export default function Dashboard() {
   // transaction- storing the data settransaction- THE storer
@@ -89,7 +91,7 @@ export default function Dashboard() {
               <button className="btn btn-sm font-thin rounded-full h-[32px] w-[100px] bg-blue-400 text-slate-50">
                 + Record
               </button>
-              <img src="/klee.png" className="h-[40px] w-[40px] rounded-full" />
+              <img src="/girl.png" className="h-[40px] w-[40px] rounded-full" />
             </div>
           </div>
         </main>
@@ -99,7 +101,7 @@ export default function Dashboard() {
       <div className="bg-gray-100 flex-grow">
         {/* start of main area */}
         <div className="container mx-auto grid grid-cols-4 grid-rows-1 gap-2">
-          <div className="mt-4 flex flex-col items-center border-[1px] rounded-lg bg-white">
+          <div className="mt-4 flex flex-col items-center border-[1px] rounded-lg bg-white gap-3 h-full">
             <div className="font-bold text-lg w-11/12 mt-2">
               <h1>Records</h1>
             </div>
@@ -109,11 +111,47 @@ export default function Dashboard() {
             >
               + ADD
             </button>
+            <input
+              type="search"
+              placeholder="Type here"
+              className="input input-bordered w-11/12 max-w-none h-9 "
+            />
+            <div className="w-11/12">
+              <h1 className="font-bold">Types</h1>
+              <div className="flex gap-3 items-center">
+                <input
+                  type="checkbox"
+                  defaultChecked
+                  className="checkbox checkbox-xs"
+                />
+                <h1>All</h1>
+              </div>
+              <div className=" items-center flex gap-3">
+                <input
+                  type="checkbox"
+                  defaultChecked
+                  className="checkbox checkbox-xs"
+                />
+                <h1>Income</h1>
+              </div>
+              <div className="items-center flex gap-3">
+                <input
+                  type="checkbox"
+                  defaultChecked
+                  className="checkbox checkbox-xs"
+                />
+                <h1>Expense</h1>
+              </div>
+            </div>
+            <div className="w-11/12">
+              <h1 className="font-bold">Categories</h1>
+              <Sidebar />
+            </div>
           </div>
           <div className="mt-4 col-span-3">
-            <div>HELLO</div>
+            <div>ni hao</div>
             <div>
-              <span>Here are the transactions \/</span>
+              <span>wow</span>
             </div>
             {/* start of  */}
 

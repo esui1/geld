@@ -2,7 +2,7 @@ const express = require("express");
 var cors = require("cors");
 const transactionRouter = require("./routers/transaction-router.js");
 // const userRouter = require("./routers/user-router.js");
-// const categoryRouter = require("./routers/category-router.js");
+const categoryRouter = require("./routers/category-router.js");
 
 const app = express();
 const port = 8000;
@@ -11,7 +11,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/transaction", transactionRouter);
-// app.use("/category", categoryRouter);
+app.use("/category", categoryRouter);
 // app.use("/user", userRouter);
 
 app.listen(port, () => {
