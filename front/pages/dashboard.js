@@ -7,6 +7,7 @@ import { useState } from "react";
 import { Gift } from "@/assets/gift";
 import { Eye } from "@/assets/eye";
 import Sidebar from "./components/category-sidebar";
+import Select from "react-select";
 
 export default function Dashboard() {
   // transaction- storing the data settransaction- THE storer
@@ -19,7 +20,8 @@ export default function Dashboard() {
   const [time, setTime] = useState("");
   const [user_id, setUser] = useState("admin");
   const [transaction_type, setType] = useState("exp");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState([]);
+  const [selectedOption, setSelectedOption] = useState(null);
 
   const changeAmount = (event) => {
     setAmount(event.target.value);
@@ -36,9 +38,10 @@ export default function Dashboard() {
   const changeDesc = (event) => {
     setDesc(event.target.value);
   };
-  const changeCategory = (event) => {
-    setCategory(event.target.value);
-    console.log(category);
+
+  const deleteTransaction = (id) => {
+    axios.delete(`http://localhost:8000/transaction/delete/${id}`);
+    fetchTransactions();
   };
 
   const fetchTransactions = () => {
@@ -46,6 +49,19 @@ export default function Dashboard() {
       setTransaction(response.data);
     });
   };
+
+  const fetchCategories = () => {
+    axios.get("http://localhost:8000/category").then((response) => {
+      setCategory(response.data);
+    });
+  };
+
+  const options = category.map((category) => {
+    return {
+      value: category.id,
+      label: category.name,
+    };
+  });
 
   const createTransaction = async () => {
     try {
@@ -56,7 +72,7 @@ export default function Dashboard() {
         desc,
         date,
         time,
-        category,
+        selectedOption,
         transaction_type,
       });
       fetchTransactions();
@@ -68,6 +84,8 @@ export default function Dashboard() {
 
   useEffect(() => {
     fetchTransactions();
+    fetchCategories();
+    console.log({ category });
   }, []);
 
   return (
@@ -166,20 +184,15 @@ export default function Dashboard() {
                   </div>
                 </div>
                 <h1 className="text-green-600">{transaction.amount}</h1>
+                <button
+                  className="btn bg-blue-300"
+                  onClick={() => deleteTransaction(transaction.id)}
+                >
+                  Delete
+                </button>
               </div>
             ))}
 
-            <div className="bg-white border rounded-xl p-3 flex items-center justify-between">
-              <div className="flex  gap-3 items-center">
-                <House />
-                <div>
-                  <h1>Lending & Renting</h1>
-
-                  <h5 className="text-gray-400">14:00</h5>
-                </div>
-              </div>
-              <h1 className="text-green-600">-1000</h1>
-            </div>
             {/*  */}
           </div>
         </div>
@@ -218,18 +231,11 @@ export default function Dashboard() {
                 {/* category */}
                 <div className="w-full">
                   <h1 className="font-thin text-lg">Category</h1>
-                  <select
-                    onChange={(value) => setCategory(value)}
-                    className="select w-full max-w-xs"
-                  >
-                    <option value="home">🕌home</option>
-                    <option value="gift">🎁Gift</option>
-                    <option value="food">🫐Food</option>
-                    <option value="drink">🍸Drink</option>
-                    <option value="transport">🚕Taxi</option>
-                    <option value="shop">🛍️Shopping</option>
-                  </select>
-
+                  <Select
+                    options={options}
+                    defaultValue={selectedOption}
+                    onChange={(value) => setSelectedOption(value)}
+                  />
                   <div className="flex">
                     <div>
                       <h1>Date</h1>

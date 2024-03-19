@@ -14,7 +14,7 @@ const createTransaction = async (req, res) => {
     amount,
     transaction_type,
     desc,
-    category,
+    selectedOption,
     date,
     time,
   } = req.body;
@@ -25,14 +25,16 @@ const createTransaction = async (req, res) => {
     amount,
     transaction_type,
     desc,
-    category,
+    selectedOption,
     date,
     time,
   });
   const datetime = date + "T" + time;
   // date+time=datetime to combine date and time in one data.
   const response =
-    await sql`insert into transactions(id, user_id, name, amount, transaction_type, description, category_id, created_at) values (${id()}, ${user_id}, ${name}, ${amount}, ${transaction_type}, ${desc}, ${category}, ${datetime})`;
+    await sql`insert into transactions(id, user_id, name, amount, transaction_type, description, category_id, created_at) values (${id()}, ${user_id}, ${name}, ${amount}, ${transaction_type}, ${desc}, ${
+      selectedOption.value
+    }, ${datetime})`;
 
   res.json(response);
 };
@@ -46,7 +48,7 @@ const updateTransaction = async (req, res) => {
 // deleting transaction
 const deleteTransaction = async (req, res) => {
   const { id } = req.params;
-  await sql`select * from transactions`;
+  await sql`delete from transactions where id = ${id}`;
 
   res.json([{ status: "success" }]);
 };
