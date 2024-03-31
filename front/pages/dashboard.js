@@ -8,6 +8,8 @@ import { Gift } from "@/assets/gift";
 import { Eye } from "@/assets/eye";
 import Sidebar from "./components/category-sidebar";
 import Select from "react-select";
+import { Button } from "@/assets/button";
+import { Tovch } from "@/assets/tovch";
 
 export default function Dashboard() {
   // transaction- storing the data settransaction- THE storer
@@ -22,6 +24,7 @@ export default function Dashboard() {
   const [transaction_type, setType] = useState("exp");
   const [category, setCategory] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
+  const [editId, seteditId] = useState("");
 
   const changeAmount = (event) => {
     setAmount(event.target.value);
@@ -38,12 +41,32 @@ export default function Dashboard() {
   const changeDesc = (event) => {
     setDesc(event.target.value);
   };
+  const editTransactionHandler = async (transaction) => {
+    document.getElementById("my_modal_updated").showModal();
+    seteditId(transaction.id);
+  };
+  const updateTransaction = async () => {
+    try {
+      await axios.put(`http://localhost:8000/transaction/update/${editId}`, {
+        amount,
+        name,
+        desc,
+        date,
+        time,
+        selectedOption,
+      });
+      fetchTransactions();
+      document.getElementById("my_modal_updated").close();
+      seteditId("");
+    } catch (error) {
+      console.error("error");
+    }
+  };
 
   const deleteTransaction = (id) => {
     axios.delete(`http://localhost:8000/transaction/delete/${id}`);
     fetchTransactions();
   };
-
   const fetchTransactions = () => {
     axios.get("http://localhost:8000/transaction").then((response) => {
       setTransaction(response.data);
@@ -166,11 +189,30 @@ export default function Dashboard() {
               <Sidebar />
             </div>
           </div>
+
           <div className="mt-4 col-span-3">
-            <div>ni hao</div>
-            <div>
-              <span>wow</span>
+            <div className=" flex flex-end">
+              <details className="dropdown">
+                <summary className="m-1 btn">Newest first</summary>
+                <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
+                  <li>
+                    <a>Latest</a>
+                  </li>
+                  <li>
+                    <a>Prior</a>
+                  </li>
+                </ul>
+              </details>
             </div>
+            <div className="flex">
+              <Button />
+              <div className="text-black text-center ml-3 mr-3 pb-5">
+                {" "}
+                Last 30 days
+              </div>
+              <Tovch />
+            </div>
+
             {/* start of  */}
 
             {transaction.map((transaction) => (
@@ -189,6 +231,12 @@ export default function Dashboard() {
                   onClick={() => deleteTransaction(transaction.id)}
                 >
                   Delete
+                </button>
+                <button
+                  className="btn bg-blue-300"
+                  onClick={() => editTransactionHandler(transaction)}
+                >
+                  Edit
                 </button>
               </div>
             ))}
@@ -261,6 +309,102 @@ export default function Dashboard() {
                   <div className="flex center pt-8">
                     <button
                       onClick={createTransaction}
+                      className="btn bg-blue-300 rounded-full w-[350px]"
+                    >
+                      Add Record
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div className="w-1/2">
+                <div>
+                  <h1>Payee</h1>
+
+                  <input
+                    value={name}
+                    onChange={changeName}
+                    type="text"
+                    placeholder="Type here"
+                    className="input input-bordered w-full max-w-xs"
+                  />
+                  <h1>Note</h1>
+                  <textarea
+                    value={desc}
+                    onChange={changeDesc}
+                    type="text"
+                    placeholder="write here"
+                    className="input input-bordered input-lg w-full max-w-full h-[260px]"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </dialog>
+        <dialog id="my_modal_updated" className="modal">
+          <div className="modal-box w-11/12 max-w-5xl max-h-none h-[450px]">
+            <form method="dialog">
+              {/* if there is a button in form, it will close the modal */}
+              <button className="text-lg btn btn-sm btn-circle btn-ghost absolute right-3 top-5">
+                X
+              </button>
+            </form>
+            <h3 className="font-bold text-2xl">Add Record</h3>
+            <div className="py-3 w-full h-full flex gap-x-4">
+              <div className="w-1/2">
+                {/* income expense tabs */}
+                <div role="tablist" className="tabs tabs-boxed">
+                  <a role="tab" className="tab tab-active">
+                    EXPENSE
+                  </a>
+                  <a role="tab" className="tab">
+                    INCOME
+                  </a>
+                </div>
+
+                {/* amount */}
+                <div className="p-3 my-3 flex flex-col bg-gray-100 border-[1px] border-gray-300 rounded-xl">
+                  <span className="font-thin text-lg">Amount</span>
+                  <input
+                    value={amount}
+                    onChange={changeAmount}
+                    type="number"
+                    placeholder="₮ 0.00"
+                    className="placeholder:text-xl w-11/12 h-[28px] bg-gray-100"
+                  />
+                </div>
+                {/* category */}
+                <div className="w-full">
+                  <h1 className="font-thin text-lg">Category</h1>
+                  <Select
+                    options={options}
+                    defaultValue={selectedOption}
+                    onChange={(value) => setSelectedOption(value)}
+                  />
+                  <div className="flex">
+                    <div>
+                      <h1>Date</h1>
+                      <input
+                        value={date}
+                        onChange={changeDate}
+                        type="date"
+                        placeholder="Type here"
+                        className="input input-bordered w-md max-w-xs gap-3"
+                      />
+                    </div>
+                    <div>
+                      <h1>Time</h1>
+                      <input
+                        value={time}
+                        onChange={changeTime}
+                        type="time"
+                        placeholder="Type here"
+                        className="input input-bordered w-md max-w-xs"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex center pt-8">
+                    <button
+                      onClick={updateTransaction}
                       className="btn bg-blue-300 rounded-full w-[350px]"
                     >
                       Add Record
