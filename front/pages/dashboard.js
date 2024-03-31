@@ -12,7 +12,7 @@ import { Button } from "@/assets/button";
 import { Tovch } from "@/assets/tovch";
 
 export default function Dashboard() {
-  // transaction- storing the data settransaction- THE storer
+  // transaction- storing the data settransaction- THE storer an
   const [transaction, setTransaction] = useState([]);
 
   const [amount, setAmount] = useState("");
