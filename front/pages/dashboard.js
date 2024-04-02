@@ -63,8 +63,8 @@ export default function Dashboard() {
     }
   };
 
-  const deleteTransaction = (id) => {
-    axios.delete(`http://localhost:8000/transaction/delete/${id}`);
+  const deleteTransaction = async (id) => {
+    await axios.delete(`http://localhost:8000/transaction/delete/${id}`);
     fetchTransactions();
   };
   const fetchTransactions = () => {
@@ -191,7 +191,7 @@ export default function Dashboard() {
           </div>
 
           <div className="mt-4 col-span-3">
-            <div className=" flex flex-end">
+            <div className="w-full flex justify-end">
               <details className="dropdown">
                 <summary className="m-1 btn">Newest first</summary>
                 <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
